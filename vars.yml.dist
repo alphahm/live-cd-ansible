@@ -1,4 +1,5 @@
 ---
+hosts:
 working_folder:
 user:
 group:
