@@ -40,7 +40,7 @@ group: <your group>
 * Run playbook
 
 ```
-ansible-playbook playbook.yml
+ansible-playbook playbook.yml --ask-become-pass
 ```
 
 ### Non-linux
