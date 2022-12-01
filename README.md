@@ -13,6 +13,25 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+## Usage
+
+### Linux
+
+```
+ansible-playbook playbook.yml
+```
+
+### Non-linux
+You will need Vagrant alongside Virtualbox.
+
+```
+vagrant up
+```
+
+```
+ansible-playbook playbook.yml
+```
+
 ## Acknowledgments
 * https://www.willhaley.com/blog/custom-debian-live-environment/
 * https://github.com/dinooz/denos
