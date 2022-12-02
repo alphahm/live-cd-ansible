@@ -3,7 +3,7 @@
 This project is inspired by a couple of helpful guides, cited below in Acknowledgments, showing
 how to build your own Live CD.
 Those guides are great, this project is just a more automated way to achieve the same. It uses
-Ansible and optionally Vagrant when not using a Linux machine.
+Ansible and optionally Vagrant when not running on a Linux machine.
 
 ## Installation
 
@@ -25,7 +25,7 @@ Install Vagrant and VirtualBox if running on a non-Linux OS.
 cp vars.yml.dist vars.yml
 ```
 
-Add needed information depending on your envrinoment setup.
+Add needed information depending on your environment setup.
 
 Example:
 
