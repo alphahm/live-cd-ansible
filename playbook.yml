@@ -36,3 +36,27 @@
         - grub-efi-ia32-bin
         - mtools
         - dosfstools
+
+    - name: Remove the working folder if it already exists
+      ansible.builtin.file:
+        path: "{{ working_folder }}"
+        state: absent
+
+    - name: Create the working folder where we store all the files
+      ansible.builtin.file:
+        path: "{{ working_folder }}"
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        mode: 0755
+
+    - name: Bootstrap and configure Debian
+      ansible.builtin.command: >
+        /usr/sbin/debootstrap
+        --arch=amd64
+        --variant=minbase
+        bullseye
+        "{{ working_folder }}/chroot"
+        http://ftp.nl.debian.org/debian/
+      args:
+        creates: "{{ working_folder }}/chroot"
