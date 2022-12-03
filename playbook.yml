@@ -56,7 +56,18 @@
         --arch=amd64
         --variant=minbase
         bullseye
-        "{{ working_folder }}/chroot"
-        http://ftp.nl.debian.org/debian/
+        {{ working_folder }}/chroot
+        {{ debian_mirror }}
       args:
         creates: "{{ working_folder }}/chroot"
+
+    - name: Template Gnome Desktop Manager install script file
+      ansible.builtin.template:
+        src: gdm_install.j2
+        dest: "{{ working_folder }}/chroot/gdm_install.sh"
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        mode: 0744
+
+    - name: Run configuration and install custom packages
+      ansible.builtin.command: /usr/sbin/chroot {{ working_folder }}/chroot ./gdm_install.sh
