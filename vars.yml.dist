@@ -3,3 +3,6 @@ hosts:
 working_folder:
 user:
 group:
+user_password:
+root_password:
+debian_mirror:

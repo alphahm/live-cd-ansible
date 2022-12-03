@@ -5,6 +5,9 @@ how to build your own Live CD.
 Those guides are great, this project is just a more automated way to achieve the same. It uses
 Ansible and optionally Vagrant when not running on a Linux machine.
 
+This playbook will install Debian Bullseye (11) with Gnome Desktop Manager but this can be
+customised to install another distribution and/or desktop manager.
+
 ## Installation
 
 ```
@@ -35,6 +38,9 @@ hosts: localhost
 working_folder: /home/<your username>/live_cd
 user: <your username>
 group: <your group>
+user_password: <live cd user password>
+root_password: <live cd root password>
+debian_mirror: <closest mirror link, pick one form https://www.debian.org/mirror/list>
 ```
 
 * Run playbook
@@ -58,6 +64,9 @@ hosts: vagrant
 working_folder: /home/vagrant/live_cd
 user: vagrant
 group: vagrant
+user_password: <live cd user password>
+root_password: <live cd root password>
+debian_mirror: <closest mirror link, pick one form https://www.debian.org/mirror/list>
 ```
 
 * Run playbook.
