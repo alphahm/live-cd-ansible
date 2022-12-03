@@ -9,7 +9,6 @@ echo "debian-live" > /etc/hostname
 echo "deb {{ debian_mirror }} bullseye main contrib non-free" > /etc/apt/sources.list
 
 # Install a Linux kernel of your choosing
-echo -e "Install a Linux kernel\n"
 apt update && \
 apt install -yq --no-install-recommends \
     linux-image-amd64 \
