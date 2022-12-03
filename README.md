@@ -35,7 +35,7 @@ Example:
 ```yaml
 ---
 hosts: localhost
-working_folder: /home/<your username>/live_cd
+working_folder: /home/<your username>/live_cd_install
 user: <your username>
 group: <your group>
 user_password: <live cd user password>
