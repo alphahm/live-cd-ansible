@@ -122,3 +122,45 @@
         dest: "{{ working_folder }}/staging/live/initrd"
         remote_src: "{{ false if hosts == 'localhost' else true }}"
         mode: 0644
+
+    - name: Create boot menu (BIOS/legacy mode)
+      ansible.builtin.copy:
+        src: ./files/isolinux.cfg
+        dest: "{{ working_folder }}/staging/isolinux/isolinux.cfg"
+        mode: 0644
+
+    - name: Create boot menu (EFI/UEFI mode) and copy file to EFI BOOT directory
+      ansible.builtin.copy:
+        src: ./files/grub.cfg
+        dest: "{{ working_folder }}/staging/{{ item }}"
+        mode: 0644
+      with_items:
+        - boot/grub/grub.cfg
+        - EFI/BOOT/grub.cfg
+
+    - name: Create boot menu (EFI/UEFI mode)
+      ansible.builtin.copy:
+        src: ./files/grub-embed.cfg
+        dest: "{{ working_folder }}/tmp/grub-embed.cfg"
+        mode: 0644
+
+    - name: Copy BIOS/legacy boot required files into our workspace
+      ansible.builtin.copy:
+        src: /usr/lib/ISOLINUX/isolinux.bin
+        dest: "{{ working_folder }}/staging/isolinux/"
+        remote_src: "{{ false if hosts == 'localhost' else true }}"
+        mode: 0644
+
+    - name: Copy BIOS/legacy boot required files into our workspace (2)
+      ansible.builtin.copy:
+        src: /usr/lib/syslinux/modules/bios/
+        dest: "{{ working_folder }}/staging/isolinux/"
+        remote_src: "{{ false if hosts == 'localhost' else true }}"
+        mode: 0644
+
+    - name: Copy EFI/modern boot required files into our workspace
+      ansible.builtin.copy:
+        src: /usr/lib/grub/x86_64-efi/
+        dest: "{{ working_folder }}/staging/boot/grub/x86_64-efi/"
+        remote_src: "{{ false if hosts == 'localhost' else true }}"
+        mode: 0644
