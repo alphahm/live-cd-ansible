@@ -73,3 +73,52 @@
 
     - name: Run configuration and install custom packages
       ansible.builtin.command: /usr/sbin/chroot {{ working_folder }}/chroot ./gdm_install.sh
+
+    - name: Create directories that will contain files for our live environment files and scratch files
+      ansible.builtin.file:
+        path: "{{ working_folder }}/{{ item }}"
+        state: directory
+        mode: 0755
+      with_items:
+        - staging/EFI/BOOT
+        - staging/boot/grub/x86_64-efi
+        - staging/isolinux
+        - staging/live
+        - tmp
+
+    - name: Compress the chroot environment into a squash filesystem
+      ansible.builtin.command: >
+        mksquashfs
+        {{ working_folder }}/chroot
+        {{ working_folder }}/staging/live/filesystem.squashfs
+        -e boot
+      args:
+        creates: "{{ working_folder }}/staging/live/filesystem.squashfs"
+
+    - name: Find vmlinuz
+      ansible.builtin.find:
+        paths: "{{ working_folder }}/chroot/boot/"
+        file_type: file
+        patterns: "vmlinuz-*"
+      register: vmlinuz
+
+    - name: Copy the kernel from inside the chroot to the live directory
+      ansible.builtin.copy:
+        src: "{{ vmlinuz['files'][0]['path'] }}"
+        dest: "{{ working_folder }}/staging/live/vmlinuz"
+        remote_src: "{{ false if hosts == 'localhost' else true }}"
+        mode: 0644
+
+    - name: Find initrd
+      ansible.builtin.find:
+        paths: "{{ working_folder }}/chroot/boot/"
+        file_type: file
+        patterns: "initrd.img-*"
+      register: initrd
+
+    - name: Copy the initramfs from inside the chroot to the live directory
+      ansible.builtin.copy:
+        src: "{{ initrd['files'][0]['path'] }}"
+        dest: "{{ working_folder }}/staging/live/initrd"
+        remote_src: "{{ false if hosts == 'localhost' else true }}"
+        mode: 0644
