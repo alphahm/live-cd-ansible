@@ -164,3 +164,44 @@
         dest: "{{ working_folder }}/staging/boot/grub/x86_64-efi/"
         remote_src: "{{ false if hosts == 'localhost' else true }}"
         mode: 0644
+
+    - name: Generate an EFI bootable GRUB image (32)
+      ansible.builtin.command: >
+        grub-mkstandalone -O i386-efi
+        --modules="part_gpt part_msdos fat iso9660"
+        --locales=""
+        --themes=""
+        --fonts=""
+        --output="{{ working_folder }}/staging/EFI/BOOT/BOOTIA32.EFI"
+        "boot/grub/grub.cfg={{ working_folder }}/tmp/grub-embed.cfg"
+      args:
+        creates: "{{ working_folder }}/staging/EFI/BOOT/BOOTIA32.EFI"
+
+    - name: Generate an EFI bootable GRUB image (64)
+      ansible.builtin.command: >
+        grub-mkstandalone -O x86_64-efi
+        --modules="part_gpt part_msdos fat iso9660"
+        --locales=""
+        --themes=""
+        --fonts=""
+        --output="{{ working_folder }}/staging/EFI/BOOT/BOOTx64.EFI"
+        "boot/grub/grub.cfg={{ working_folder }}/tmp/grub-embed.cfg"
+      args:
+        creates: "{{ working_folder }}/staging/EFI/BOOT/BOOTx64.EFI"
+
+    - name: Create a FAT16 UEFI boot disk image containing the EFI bootloaders
+      ansible.builtin.command: " {{ item }} "
+      with_items:
+        - dd if=/dev/zero of=efiboot.img bs=1M count=20
+        - /usr/sbin/mkfs.vfat efiboot.img
+        - mmd -i efiboot.img ::/EFI ::/EFI/BOOT
+        - >
+          mcopy -vi efiboot.img
+          EFI/BOOT/BOOTIA32.EFI
+          EFI/BOOT/BOOTx64.EFI
+          boot/grub/grub.cfg
+          ::/EFI/BOOT/
+        - touch {{ working_folder }}/boot_disk_done
+      args:
+        chdir: "{{ working_folder }}/staging"
+        creates: "{{ working_folder }}/boot_disk_done"
