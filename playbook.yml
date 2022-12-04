@@ -8,9 +8,14 @@
 
   tasks:
 
-    - name: Check that working folder is set
-      ansible.builtin.fail: msg="Please set the working_folder path with no trailing hash in vars.yml"
-      when: not working_folder or working_folder[-1] == "/"
+    - name: Check that working and destination folders are set
+      ansible.builtin.fail: msg="Please set {{ item.name }} path with no trailing hash in vars.yml"
+      when: not item.path or item.path[-1] == "/"
+      with_items:
+        - name: working_folder
+          path: "{{ working_folder }}"
+        - name: destination_folder
+          path: "{{ destination_folder }}"
 
     - name: Check other required variables are set
       ansible.builtin.fail: msg="Please set {{ item }} in vars.yml"
@@ -205,3 +210,29 @@
       args:
         chdir: "{{ working_folder }}/staging"
         creates: "{{ working_folder }}/boot_disk_done"
+
+    - name: Generate the .iso disc image file into destination folder
+      ansible.builtin.command: >
+        xorriso
+        -as mkisofs
+        -iso-level 3
+        -o {{ destination_folder }}/debian-live.iso
+        -full-iso9660-filenames
+        -volid "DEBLIVE"
+        --mbr-force-bootable -partition_offset 16
+        -joliet -joliet-long -rational-rock
+        -isohybrid-mbr /usr/lib/ISOLINUX/isohdpfx.bin
+        -eltorito-boot
+        isolinux/isolinux.bin
+        -no-emul-boot
+        -boot-load-size 4
+        -boot-info-table
+        --eltorito-catalog isolinux/isolinux.cat
+        -eltorito-alt-boot
+        -e --interval:appended_partition_2:all::
+        -no-emul-boot
+        -isohybrid-gpt-basdat
+        -append_partition 2 C12A7328-F81F-11D2-BA4B-00A0C93EC93B {{ working_folder }}/staging/efiboot.img
+        {{ working_folder }}/staging
+      args:
+        creates: "{{ destination_folder }}/debian-live.iso"
