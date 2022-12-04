@@ -35,7 +35,8 @@ Example:
 ```yaml
 ---
 hosts: localhost
-working_folder: /home/<your username>/live_cd_install
+working_folder: /home/<your username>/live_cd
+destination_folder: /home/<your username>/live_cd_iso
 user: <your username>
 group: <your group>
 user_password: <live cd user password>
@@ -62,7 +63,8 @@ vagrant up
 ```yaml
 ---
 hosts: vagrant
-working_folder: /home/vagrant/live_cd
+working_folder: /home/vagrant/live_cd_install
+destination_folder: /home/vagrant/live_cd
 user: vagrant
 group: vagrant
 user_password: <live cd user password>

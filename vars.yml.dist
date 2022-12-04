@@ -1,6 +1,7 @@
 ---
 hosts:
 working_folder:
+destination_folder:
 user:
 group:
 user_password:
