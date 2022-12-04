@@ -12,20 +12,18 @@
       ansible.builtin.fail: msg="Please set {{ item.name }} path with no trailing hash in vars.yml"
       when: not item.path or item.path[-1] == "/"
       with_items:
-        - name: working_folder
-          path: "{{ working_folder }}"
-        - name: destination_folder
-          path: "{{ destination_folder }}"
+        - {name: working_folder, path: "{{ working_folder }}"}
+        - {name: destination_folder, path: "{{ destination_folder }}"}
 
     - name: Check other required variables are set
-      ansible.builtin.fail: msg="Please set {{ item }} in vars.yml"
-      when: item|string == ''
+      ansible.builtin.fail: msg="Please set {{ item.name }} in vars.yml"
+      when: not item.value or item.value|string == ''
       with_items:
-        - user
-        - group
-        - user_password
-        - root_password
-        - debian_mirror
+        - {name: user, value: "{{ user }}"}
+        - {name: group, value: "{{ group }}"}
+        - {name: user_password, value: "{{ user_password }}"}
+        - {name: root_password, value: "{{ root_password }}"}
+        - {name: debian_mirror, value: "{{ debian_mirror }}"}
 
     - name: Install applications we need to build the environment
       ansible.builtin.apt:
