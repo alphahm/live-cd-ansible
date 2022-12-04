@@ -79,6 +79,12 @@ source venv/bin/activate
 ansible-playbook playbook.yml
 ```
 
+When done, to shutdown Vagrant machine, run:
+
+```
+vagrant halt
+```
+
 ## Acknowledgments
 * https://www.willhaley.com/blog/custom-debian-live-environment/
 * https://github.com/dinooz/denos
