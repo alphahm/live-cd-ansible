@@ -46,6 +46,7 @@ debian_mirror: <closest mirror link, pick one form https://www.debian.org/mirror
 * Run playbook
 
 ```
+source venv/bin/activate
 ansible-playbook playbook.yml --ask-become-pass
 ```
 
@@ -72,6 +73,7 @@ debian_mirror: <closest mirror link, pick one form https://www.debian.org/mirror
 * Run playbook.
 
 ```
+source venv/bin/activate
 ansible-playbook playbook.yml
 ```
 
