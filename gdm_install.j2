@@ -2,13 +2,13 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-# Set a custom hostname for your Debian environment
+# Set a custom hostname for your Debian environment
 echo "debian-live" > /etc/hostname
 
 # Edit sources to include non-free
-echo "deb {{ debian_mirror }} bullseye main contrib non-free" > /etc/apt/sources.list
+echo "deb {{ debian_mirror }} bookworm main contrib non-free" > /etc/apt/sources.list
 
-# Install a Linux kernel of your choosing
+# Install a Linux kernel of your choosing
 apt update && \
 apt install -yq --no-install-recommends \
     linux-image-amd64 \
@@ -26,20 +26,20 @@ chown -R live:live /home/live
 # Installing desktop environment
 apt install -yq gnome/stable
 
-# Optional, remove what's not needed, games etc.
+# Optional, remove what's not needed, games etc.
 apt purge -y aisleriot gnome-chess gnome-2048 gnome-mahjongg five-or-more \
     four-in-a-row gnome-nibbles hitori gnome-klotski lightsoff quadrapassel \
     iagno gnome-mines gnome-sudoku swell-foop tali gnome-taquin \
     gnome-tetravex gnome-robots transmission-gtk gnome-weather
 
-# Installing other packages (customise here)
+# Installing other packages (customise here)
 apt install -yq --no-install-recommends \
     net-tools curl openssh-server openssh-client vim git \
     wget zip unzip iputils-ping iproute2 cron jq dconf-editor
 
-# Cleanup
+# Cleanup
 apt -y auto-remove
 apt clean
 
-# Remove this script
+# Remove this script
 rm -f ./gdm_install.sh

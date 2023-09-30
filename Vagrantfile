@@ -3,7 +3,7 @@
 
 API_VERSION = "2"
 Vagrant.configure(API_VERSION) do |config|
-    config.vm.box = "debian/bullseye64"
+    config.vm.box = "debian/bookworm64"
     config.vm.synced_folder "live_cd", "/home/vagrant/live_cd"
     
     config.vm.provider :virtualbox do |v|
