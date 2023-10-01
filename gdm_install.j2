@@ -9,14 +9,14 @@ echo "debian-live" > /etc/hostname
 echo "deb {{ debian_mirror }} bookworm main contrib non-free" > /etc/apt/sources.list
 
 # Install a Linux kernel of your choosing
-apt update && \
-apt install -yq --no-install-recommends \
+apt-get update
+apt-get install -yq --no-install-recommends \
     linux-image-amd64 \
     live-boot \
     systemd-sysv
 
 # User settings
-apt install -yq --no-install-recommends sudo
+apt-get install -yq --no-install-recommends sudo
 /usr/sbin/useradd live -m -s /bin/bash
 echo 'live:{{ user_password }}' | /usr/sbin/chpasswd
 echo 'root:{{ root_password }}' | /usr/sbin/chpasswd
@@ -24,22 +24,22 @@ chown -R live:live /home/live
 /usr/sbin/usermod -aG sudo live
 
 # Installing desktop environment
-apt install -yq gnome/stable
+apt-get install -yq gnome/stable
 
 # Optional, remove what's not needed, games etc.
-apt purge -y aisleriot gnome-chess gnome-2048 gnome-mahjongg five-or-more \
+apt-get purge -y aisleriot gnome-chess gnome-2048 gnome-mahjongg five-or-more \
     four-in-a-row gnome-nibbles hitori gnome-klotski lightsoff quadrapassel \
     iagno gnome-mines gnome-sudoku swell-foop tali gnome-taquin \
     gnome-tetravex gnome-robots transmission-gtk gnome-weather
 
 # Installing other packages (customise here)
-apt install -yq --no-install-recommends \
+apt-get install -yq --no-install-recommends \
     net-tools curl openssh-server openssh-client vim git \
     wget zip unzip iputils-ping iproute2 cron jq dconf-editor
 
 # Cleanup
-apt -y auto-remove
-apt clean
+apt-get -y auto-remove
+apt-get clean
 
 # Remove this script
 rm -f "$0"

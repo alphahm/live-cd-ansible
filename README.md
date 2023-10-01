@@ -5,7 +5,7 @@ how to build your own Live CD.
 Those guides are great, this project is just a more automated way to achieve the same. It uses
 Ansible and optionally Vagrant when not running on a Linux machine.
 
-This playbook will install Debian Bullseye (11) with Gnome Desktop Manager but this can be
+This playbook will install Debian Bookworm (12) with Gnome Desktop Manager but this can be
 customised to install another distribution and/or desktop manager.
 
 ## Installation
