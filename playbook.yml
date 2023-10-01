@@ -60,7 +60,7 @@
         /usr/sbin/debootstrap
         --arch=amd64
         --variant=minbase
-        bullseye
+        bookworm
         {{ working_folder }}/chroot
         {{ debian_mirror }}
       args:
